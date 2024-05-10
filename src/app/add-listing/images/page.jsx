@@ -23,7 +23,6 @@ export default function Images() {
     const { activeSession: { id: sessionId }} =  useAddPropertySession()
 
 
-
     // const {isLoading, addPropertySessions:{ activeSession: { id } }} =  usePropertyListingSession() 
     const dispatch = usePropertyDispatch()
     const router = useRouter()
@@ -75,7 +74,7 @@ export default function Images() {
             const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/property-image-upload", {
                 method: "POST",
                 headers: {
-                    // Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: formData,
             });

@@ -39,7 +39,8 @@ async function findOwnersProperty(ownersUserId) {
             // isCreateSessionActive: true,
             isPublished:false,
             hosts:[ownersUserId],
-            sessionStatus:'property-type'
+            sessionStatus:'property-type',
+            _createAt: new Date()
           })
 
           return [newPropertyResult]
@@ -117,7 +118,7 @@ export async function PATCH(request, response) {
         try { 
           const newPropertyResult = await listingPropertyCollection
                                             .updateOne({ _id: new ObjectId(id) },
-                                                            { $set: { ...body} })
+                                                            { $set: { ...body, _updateAt: new Date()} })
           if(newPropertyResult){
             console.log(newPropertyResult)
     

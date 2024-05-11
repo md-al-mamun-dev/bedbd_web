@@ -11,6 +11,9 @@ import { useRouter } from 'next/navigation'
 import useToken from '@/context/account/useToken'
 import usePropertyListingSession from '@/context/addListing/usePropertyListingSessions'
 import useAddPropertySession from '@/context/addListing/useAddPropertySession'
+import useAddPropertySessionDispatch from '@/context/addListing/useAddPropertySessionDispatch'
+
+// import image from '@/../public'
 
 export default function Images() {
     
@@ -20,11 +23,8 @@ export default function Images() {
 
     const [propertySessionId, setPropertySessionId] = useState('')
     const data =  usePropertyListingSession() 
-    const { activeSession: { id: sessionId }} =  useAddPropertySession()
-
-
-    // const {isLoading, addPropertySessions:{ activeSession: { id } }} =  usePropertyListingSession() 
-    const dispatch = usePropertyDispatch()
+    const { activeSession: { id: propertyId, images }} =  useAddPropertySession()
+    const dispatch = useAddPropertySessionDispatch()
     const router = useRouter()
 
     const {
@@ -61,7 +61,7 @@ export default function Images() {
 
     const onDrop = async (acceptedFiles, rejectedFiles) => {
         const formData = new FormData();
-        formData.append('propertySessionId', sessionId);
+        formData.append('propertyId', propertyId);
         const imageArray = [];
         if (acceptedFiles.length > 0) {
             acceptedFiles.forEach(file => {
@@ -71,13 +71,22 @@ export default function Images() {
     
             console.log(formData.values());
     
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/property-image-upload", {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/api/property-image", {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
                 body: formData,
             });
+
+            // console.log(response)
+
+            const responseResult = await response.json()
+
+            if(responseResult['isSuccess']){
+                console.log(responseResult)
+                dispatch({type:'addProperty/addImages', data: responseResult['images']})
+            }
         }
         if (rejectedFiles.length) {
             setRejectedFiles(previousFiles => [...previousFiles, ...rejectedFiles]);
@@ -98,7 +107,7 @@ export default function Images() {
                                                                                         maxFiles:10,
                                                                                     })
     function onContinueBtnClick() {
-        dispatch({type:'property/images', data: uploadedImageFiles})
+        // dispatch({type:'property/images', data: uploadedImageFiles})
         moveToNextPage()
         // console.log(uploadedImageFiles)
         // uploadedImageFiles.map(file => {
@@ -106,9 +115,36 @@ export default function Images() {
         // })
     }
 
-    function removeImage(idx) {
+    function removeImage(id) {
+        console.log(id)
+        let deletedImageIndex
+        const deletedImage = images.filter((img, idx)=>{
+                                                        if(img['_id'] === id){
+                                                            deletedImageIndex = idx
+                                                            return img
+                                                        }})[0]
+        dispatch({type:'addProperty/removeImage', data:id})
+
+
+        async function deleteImage(imageId) {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/api/property-image?property=${propertyId}&id=${imageId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+
+            const responseResult = await response.json()
+            console.log(responseResult)
+            if(!responseResult || responseResult['isSuccess'] === false){
+                dispatch({type:'addProperty/reverseRemoveImage', data:{image:deletedImage, index:deletedImageIndex}})
+            }
+        }
+        deleteImage(id)
+        
         // const otherImages = uploadedImageFiles.filter((item, index) => index !== idx)
-        setUploadImageFiles(previousfiles => (previousfiles.filter((item, index) => index !== idx)))
+        // setUploadImageFiles(previousfiles => (previousfiles.filter((item, index) => index !== idx)))
     }
 
 
@@ -135,14 +171,19 @@ export default function Images() {
 
 
             {
-                uploadedImageFiles.length > 0 && <>
+                images.length > 0 && <>
                     {/* <p className={`${styles.info}`}>Arrange the photos in the desired order by clicking and dragging them for guests to view.</p> */}
 
                 {
-                    uploadedImageFiles.map((image, idx) =>(
+                    // images.map((image, idx)=>(
+                    //     <Image src={'@/..'+image['imageUrl']} fill/>
+                    // ))
+
+
+                    images.map((image, idx) =>(
                         <div className={`${styles.image_wrapper}`}>
-                            <Image src={image['preview']} fill/>
-                            <button className={`${styles.drop_img_btn}`} onClick={()=>removeImage(idx)}>
+                            <Image src={image['pathName'] + image['fileName']} fill/>
+                            <button className={`${styles.drop_img_btn}`} onClick={()=>removeImage(image['_id'])}>
                                 {/* <X size={24} className={`${styles.close_icon}`}/> */}
                                 <LucidIcon name={'x'} className={`${styles.close_icon} `} size={24} />
                             </button>

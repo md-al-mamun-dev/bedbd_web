@@ -693,6 +693,57 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                     }
                 }
         }
+        case 'addProperty/checkOutTime':{
+            console.log(data)
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'], 
+                        checkOutTime:data
+                    }
+                }
+        }
+
+        case 'addProperty/addImages':{
+            console.log(data)
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'], 
+                        images:[...initialData['activeSession']['images'], ...data]
+                    }
+                }
+        }
+        case 'addProperty/removeImage':{
+            console.log(data)
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'], 
+                        images:initialData['activeSession']['images'].filter(item => item['_id'] != data)
+                    }
+                }
+        }
+        case 'addProperty/reverseRemoveImage':{
+
+            const images = ()=> 
+                    data['index'] === 0 
+                        ? [data['image'], ...initialData['activeSession']['images']]
+                        : initialData['activeSession']['images'].length <= data['index']
+                            ? [ ...initialData['activeSession']['images'], data['image']]
+                            : [ ...initialData['activeSession']['images'].slice(0, data['index']),
+                                                        data['image'],
+                                ...initialData['activeSession']['images'].slice(data['index']) ]
+            
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        images:images()
+                    }
+                }
+        }
+
 
 
 

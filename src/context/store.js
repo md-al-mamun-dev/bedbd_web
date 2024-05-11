@@ -50,6 +50,8 @@ export const store = {
                 roomCount:[],
                 bedCount:[],
                 guestCount:[],
+
+                images:[],
             },
             location:{
                 name:'',

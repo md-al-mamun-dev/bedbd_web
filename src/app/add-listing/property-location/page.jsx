@@ -60,13 +60,13 @@ export default function Location() {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             dispatch({
-              type:'addProperty/setGeolocation', 
+              type:'addProperty/setGeolocation',
               data:{
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude
                   }})
               dispatch({
-                type:'addProperty/setSessionLocation', 
+                type:'addProperty/setSessionLocation',
                 data:{
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude

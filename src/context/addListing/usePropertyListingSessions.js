@@ -44,7 +44,7 @@ export default function usePropertyListingSession(){
                                                 }
                                                 return object;
                                             })
-
+                            console.log(data)
                             dispatch({type:'addProperty/sessions', data: response_data['documents']})
                             if(data.length === 1){
                                 dispatch({type:'addProperty/activeSession', data: data[0]})

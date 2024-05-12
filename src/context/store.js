@@ -52,6 +52,19 @@ export const store = {
                 guestCount:[],
 
                 images:[],
+
+                rent:10,
+                currency:'$',
+                serviceFee:2,
+                tax:1,
+
+                checkInpossibility:'',
+                allowMoreThenMonth:'',
+                isBookingExtend:'',
+                maxNightStayLimit:30,
+
+                approvingMethod:'',
+                genderPreference:''
             },
             location:{
                 name:'',

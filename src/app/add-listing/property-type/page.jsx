@@ -34,8 +34,9 @@ export default function PropertyType() {
     const { activeSession }  = useAddPropertySession()
 
 
-    console.log(propertyType)
-    // console.log(activeSession)
+
+    console.log(activeSession)
+    console.log(typeof propertyType)
 
     const router = useRouter()
 
@@ -81,13 +82,17 @@ export default function PropertyType() {
                 {
                     isLoading 
                         ? <div>Loading...</div>
-                        :  propertyTypes.map(type=>(
-                                            <div key={type['id']} className={`${styles.listing_type_item}  ${propertyType===type['id'] ? 'outline-secondary-400 border-transparent-1px scale-0003': 'outline-transparent-2px border-neutral-100'  } `} onClick={()=> onPropertyTypeClickHandlar(type['id'])}>                                                    
+                        :  propertyTypes.map(type=>{
+                                        console.log(propertyType==type['id'])
+                                        console.log(propertyType )
+                                        console.log(type['id'])
+
+                                        return    <div key={type['id']} className={`${styles.listing_type_item}  ${propertyType==type['id'] ? 'outline-secondary-400 border-transparent-1px scale-0003': 'outline-transparent-2px border-neutral-100'  } `} onClick={()=> onPropertyTypeClickHandlar(type['id'])}>                                                    
                                                 <div className={`${styles.item_icon_wrapper}`}>
                                                     <Image src={`/icons/${type.icon}`} fill />
                                                 </div>
                                                 <h4 className={`${styles.listing_type_name}`}>{type['typeName']}</h4>
-                                            </div>))
+                                            </div>})
                 }
             </div>
             <button 

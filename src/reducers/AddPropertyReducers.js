@@ -744,6 +744,102 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                 }
         }
 
+        case 'addProperty/rent':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        rent:data
+                    }
+                }
+        }
+        case 'addProperty/serviceFee':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        serviceFee:data
+                    }
+                }
+        }
+        case 'addProperty/tax':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        tax:data
+                    }
+                }
+        }
+        case 'addProperty/currency':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        currency:data
+                    }
+                }
+        }
+
+        case 'addProperty/checkInPossibility':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        checkInPossibility:data
+                    }
+                }
+        }
+
+        case 'addProperty/allowMoreThenMonth':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        allowMoreThenMonth:data
+                    }
+                }
+        }
+        case 'addProperty/isBookingExtend':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        isBookingExtend:data
+                    }
+                }
+        }
+        case 'addProperty/maxNightStayLimit':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        maxNightStayLimit:data
+                    }
+                }
+        }
+
+        case 'addProperty/approvingMethod':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        approvingMethod:data
+                    }
+                }
+        }
+
+        case 'addProperty/genderPreference':{   
+            return { 
+                    ...initialData, 
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        genderPreference:data
+                    }
+                }
+        }
+
+
 
 
 

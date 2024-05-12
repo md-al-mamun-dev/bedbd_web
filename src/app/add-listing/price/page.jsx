@@ -5,21 +5,72 @@ import { Minus, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import usePropertyDispatch from '@/context/property/usePropertyDispatch'
 import { useRouter } from 'next/navigation'
+import usePropertyListingSession from '@/context/addListing/usePropertyListingSessions'
+import useAddPropertySession from '@/context/addListing/useAddPropertySession'
+import useToken from '@/context/account/useToken'
+import useProperty from '@/context/property/useProperty'
+import useAddPropertySessionDispatch from '@/context/addListing/useAddPropertySessionDispatch'
 
 export default function Price() {
-const [currencySymbol, setCurrencySymbol] = useState('$')
-const [rent, setRent] = useState(21)
+// const [currencySymbol, setCurrencySymbol] = useState('$')
+// const [rent, setRent] = useState(21)
 const [minRent, setMinRent] = useState(3)
-const [serviceFee, setServiceFee] = useState(2)
-const [tax, setTax] = useState(1)
-const dispatch = usePropertyDispatch()
+// const [serviceFee, setServiceFee] = useState(2)
+// const [tax, setTax] = useState(1)
+// const dispatch = usePropertyDispatch()
+const dispatch = useAddPropertySessionDispatch()
+
 const router = useRouter()
 
+
+
+const data = usePropertyListingSession()
+const {isLoading:isTokenLoading,
+    isSet,
+    token} = useToken()
+const {activeSession: { id:propertyId, rent,  currency:currencySymbol,  serviceFee,  tax}, } = useAddPropertySession()
+const {  timeZone:timezoneData } = useProperty()
+
+async function updateProperty({propertyId, data}){
+  let query = process.env.NEXT_PUBLIC_API_URL + `/api/listing?id=${propertyId}`
+  const response = await fetch(query , {
+    method: 'PATCH',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        },
+    body: JSON.stringify(data)
+    });
+
+    if(response){
+      console.log(response.json)
+    }
+}
+
 function moveToPreviousPage() {
-    router.push('/add-listing/view-property-type')
+  router.push('/add-listing/images')
   }
 function moveToNextPage() {
-    router.push('/add-listing/availability')
+    router.push('/add-listing/property-availability')
+}
+function onContinueBtnClickHandlar(e) {
+  e.preventDefault()
+  // const selectedCustomPropertyBookingTypes = customPropertyBookingTypes.filter(i=> i['isSelected'])
+
+  updateProperty({propertyId, 
+    data:{  
+        rent,
+        currency:currencySymbol,
+        serviceFee,
+        tax,
+        sessionStatus: 'property-availability' 
+    }})
+
+  moveToNextPage()
+  // console.log(e)
+
+  // updateProperty({propertyId, data:{propertyType: activeSession['propertyType'], sessionStatus: 'view-property-type' }})
+  // router.push('/add-listing/property-details')
 }
 
 
@@ -29,21 +80,37 @@ const onRentValueChange = (e)=>{
   const currencySymbolRegex = /^[^\d.,]+/;
   const textWithoutCurrencySymbol = inputValue.replace(currencySymbolRegex, '').trim();
   textWithoutCurrencySymbol === ''
-    ? setRent(minRent)
-    : setRent(parseInt(textWithoutCurrencySymbol))  
+    ? dispatch({type:'addProperty/rent', data:minRent})
+    : dispatch({type:'addProperty/rent', data:parseInt(textWithoutCurrencySymbol)})  
 }
 
 const incrementRent = ()=>{
-  setRent(rent+1)
+  dispatch({type:'addProperty/rent', data:rent+1})
+
 }
 const decrementRent = ()=>{
   minRent < rent
-    ? setRent(rent-1)
-    : setRent(minRent)
+    ? dispatch({type:'addProperty/rent', data:rent-1}) 
+    : dispatch({type:'addProperty/rent', data:minRent}) 
 }
 
 // set input field width accroding to value digit number
 const [inputFieldSize, setInputFieldSize] = useState(2)
+async function updateProperty({propertyId, data}){
+  let query = process.env.NEXT_PUBLIC_API_URL + `/api/listing?id=${propertyId}`
+  const response = await fetch(query , {
+    method: 'PATCH',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        },
+    body: JSON.stringify(data)
+    });
+
+    if(response){
+      console.log(response.json)
+    }
+}
 useEffect(() => {
   const rentDigit = Math.abs(rent).toString().length;
   if (rentDigit<3) setInputFieldSize(2)
@@ -145,7 +212,7 @@ function onContinueBtnClick() {
         </p>
 
         
-        <SwitchBtn previousPage={moveToPreviousPage} nextPage={moveToNextPage}/>
+        <SwitchBtn previousPage={moveToPreviousPage} nextPage={onContinueBtnClickHandlar}/>
     </div>
   )
 }

@@ -29,7 +29,11 @@ async function findOwnersProperty(ownersUserId) {
 
     try {
       // const findResult = await propertyListingCollection.find(findQuery);
+      // const resultArray = await propertyListingCollection.find(findQuery).toArray();
+
       const resultArray = await propertyListingCollection.find(findQuery).toArray();
+
+
       if(resultArray.length > 0){
         return resultArray
       }else{
@@ -104,6 +108,30 @@ export async function PATCH(request, response) {
 
 
   const body = await request.json()
+
+  function assignObjectOnUpdateData(data) {
+    for (let key in data) {
+      if(key === 'propertyType'){
+        data[key] = new ObjectId(data[key])
+      }else if(
+           key === 'propertyStates' 
+        || key === 'propertyBookingTypes'
+        || key === 'propertyFeatures' 
+        || key === 'amenities' 
+        || key === 'homeRules' ){
+        data[key] = data[key].map(item => new ObjectId(item))
+      }
+      else{
+        data[key] = data[key]
+      }
+    }
+
+    return data;
+}
+  // const updateData = assignObjectOnUpdateData(body)
+
+  // console.log(updateData)
+
   const params  = request.nextUrl.searchParams
   const id  = params.get('id')
 
@@ -118,7 +146,7 @@ export async function PATCH(request, response) {
         try { 
           const newPropertyResult = await listingPropertyCollection
                                             .updateOne({ _id: new ObjectId(id) },
-                                                            { $set: { ...body, _updateAt: new Date()} })
+                                                       { $set: { ...assignObjectOnUpdateData(body)  , _updateAt: new Date()} })
           if(newPropertyResult){
             console.log(newPropertyResult)
     

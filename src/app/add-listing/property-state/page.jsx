@@ -28,7 +28,7 @@ export default function PropertyState() {
 
     const {isLoading:isPropertyStateLoading, propertyStates} = usePropertyStates()
 
-    const { activeSession:{id:propertyId, propertyStates:selectedPropertyStates, customPropertyStates },}  = useAddPropertySession()
+    const { activeSession:{id:propertyId, _propertyStates:selectedPropertyStates, customPropertyStates },}  = useAddPropertySession()
     // const { activeSession:{id:propertyId, propertyStates:selectedPropertyStates, customPropertyStates},}  = useAddPropertySession()
     // const { activeSession:{id:propertyId, propertyStates:selectedPropertyStates, customPropertyStates},}  = useAddPropertySession()
     const {isLoading:isTokenLoading,
@@ -63,16 +63,16 @@ export default function PropertyState() {
         if(selectedCustomPropertyState.length>0)
             updateProperty({propertyId, 
                 data:{  
-                          propertyStates: selectedPropertyStates,
+                         _propertyStates: selectedPropertyStates,
                     customPropertyStates: selectedCustomPropertyState,
-                    sessionStatus: 'booking-type' 
+                           sessionStatus: 'booking-type' 
                 }})
         else{
             updateProperty({propertyId, 
                 data:{
-                          propertyStates: selectedPropertyStates,
-                          customPropertyStates:[],
-                           sessionStatus: 'booking-type' 
+                          _propertyStates: selectedPropertyStates,
+                     customPropertyStates: [],
+                            sessionStatus: 'booking-type' 
                         }
                     })
         }

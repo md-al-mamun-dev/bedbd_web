@@ -25,7 +25,7 @@ export default function LocationConfirmation(){
     const router = useRouter()
     const propertyListingData =  usePropertyListingSession()
     const { location:{ coordinates:{ markerPosition }}, 
-            activeSession:{ id:propertyId, location:propertyLoacation, country, city:selectedCity, district:selectedDistrict,  thana:selectedThana,  timezone:selectedTimezone, zipCode:selectedZipCode     }, 
+            activeSession:{ id:propertyId, address, location:propertyLoacation, country, city:selectedCity, district:selectedDistrict,  thana:selectedThana,  timezone:selectedTimezone, zipCode:selectedZipCode     }, 
             setterConditions:{isCountrySet, isCitySet, isDistrictSet, isThanaSet, isTimezoneSet, isZipCodeSet  } 
         } = useAddPropertySession()
 
@@ -38,10 +38,10 @@ export default function LocationConfirmation(){
     const [postZipCode, setPostZipCode] = useState(selectedZipCode)
     const [thana, setThana] = useState(selectedThana)
     const [district, setDistrict] = useState(selectedDistrict)
-    const [address, setAddress] = useState({     aptFloor: '',
-                                            streetAddress: '',
-                                                addressOne: '',
-                                                addressTwo: ''})
+    // const [address, setAddress] = useState({     aptFloor: '',
+    //                                         streetAddress: '',
+    //                                             addressOne: '',
+    //                                             addressTwo: ''})
 
     const {isLoading: isLoacalInfoLoading, localInfo} = useLocalInfo()
     const {isLoading: isIpLocationLoading , ipLocation}= useIpLocation()
@@ -127,6 +127,7 @@ export default function LocationConfirmation(){
     }
 
     async function updateProperty({propertyId, data}){
+        
         let query = process.env.NEXT_PUBLIC_API_URL + `/api/listing?id=${propertyId}`
         const response = await fetch(query , {
           method: 'PATCH',
@@ -145,36 +146,38 @@ export default function LocationConfirmation(){
         e.preventDefault()
         
         // Address 
-        let address_compose = ''
-        if(address['aptFloor'].length > 0){
-            address_compose = address_compose + address['aptFloor']
-        }
-        if(address['streetAddress'].length > 0){
-            if(address_compose.length > 0){
-                address_compose = address_compose + ', '
-            }
-            address_compose = address_compose + address['streetAddress']
-        }
-        if(address['addressOne'].length > 0){
-            if(address_compose.length > 0){
-                address_compose = address_compose + ', '
-            }
-            address_compose = address_compose + address['addressOne']
-        }
-        if(address['addressTwo'].length > 0){
-            if(address_compose.length > 0){
-                address_compose = address_compose + ', '
-            }
-            address_compose = address_compose + address['addressTwo']
-        }
-
+        // let address_compose = ''
+        // if(address['aptFloor'].length > 0){
+        //     address_compose = address_compose + address['aptFloor']
+        // }
+        // if(address['streetAddress'].length > 0){
+        //     if(address_compose.length > 0){
+        //         address_compose = address_compose + ', '
+        //     }
+        //     address_compose = address_compose + address['streetAddress']
+        // }
+        // if(address['addressOne'].length > 0){
+        //     if(address_compose.length > 0){
+        //         address_compose = address_compose + ', '
+        //     }
+        //     address_compose = address_compose + address['addressOne']
+        // }
+        // if(address['addressTwo'].length > 0){
+        //     if(address_compose.length > 0){
+        //         address_compose = address_compose + ', '
+        //     }
+        //     address_compose = address_compose + address['addressTwo']
+        // }
+        console.log(address)
+         
 
         updateProperty({propertyId, 
             data:{
-                address: address_compose,
+                address:address,
                 timezone : selectedTimezone, 
                 zipCode: postZipCode,
-                country, city, district, thana
+                country, city, district, thana,
+                sessionStatus:'accommodation-details'
             }})
         moveToNextPage()
         // router.push('/add-listing/accommodation-details')
@@ -215,25 +218,32 @@ export default function LocationConfirmation(){
             {/* const [addres, setAddres] = useState({aptFloor:'', streetAddress:'', addresss:'', addressTwo:''}) */}
                         <input 
                             value={address['aptFloor']}
-                            onChange={e=>setAddress({...address, 'aptFloor':e.target.value })}
+                            // onChange={e=>setAddress({...address, 'aptFloor':e.target.value })}
+                            onChange={e=>dispatch({type:'addProperty/address-aptFloor', data: e.target.value })}
+
                             className='w-100 fs-regular mr-top-16px clr-neutral-500 border-neutral-500 p-16px-24px radius-8' 
                             placeholder="apt, floor(if applicable)" name='floor'/>
 
                         <input 
                             value={address['streetAddress']}
-                            onChange={e=>setAddress({...address, 'streetAddress':e.target.value })}
+                            // onChange={e=>setAddress({...address, 'streetAddress':e.target.value })}
+                            onChange={e=>dispatch({type:'addProperty/address-streetAddress', data:e.target.value })}
                             className='w-100 fs-regular mr-top-16px clr-neutral-500 border-neutral-500 p-16px-24px radius-8' 
                             placeholder="street address" name='street-address'/>
 
                         <input 
                             value={address['addressOne']}
-                            onChange={e=>setAddress({...address, 'addressOne':e.target.value })}
+                            // onChange={e=>setAddress({...address, 'addressOne':e.target.value })}
+                            onChange={e=>dispatch({type:'addProperty/address-addressOne', data:e.target.value })}
+
                             className='w-100 fs-regular mr-top-16px clr-neutral-500 border-neutral-500 p-16px-24px radius-8' 
                             placeholder="Address" name='address-line-2'/>
 
                         <input 
                             value={address['addressTwo']}
-                            onChange={e=>setAddress({...address, 'addressTwo':e.target.value })}
+                            // onChange={e=>setAddress({...address, 'addressTwo':e.target.value })}
+                            onChange={e=>dispatch({type:'addProperty/address-addressTwo', data:e.target.value })}
+
                             className='w-100 fs-regular mr-top-16px clr-neutral-500 border-neutral-500 p-16px-24px radius-8' 
                             placeholder="Address-2" name='address-two'/>
 
@@ -256,7 +266,7 @@ export default function LocationConfirmation(){
                     {/* district */}
                         <input 
                             value={district}
-                            onChange={e=>setDistrict({...district, 'name':e.target.value })}
+                            onChange={e=>setDistrict(e.target.value)}
                             className='w-100 fs-regular mr-top-16px clr-neutral-500 border-neutral-500 p-16px-24px radius-8' 
                             placeholder="District" name='district'/>
                         {/* <div className='position-relative mr-top-14px'>

@@ -28,7 +28,7 @@ export default function BookingType() {
         token} = useToken()
 
 
-    const { activeSession:{id:propertyId, propertyBookingTypes:selectedPropertyBookingTypes, customPropertyBookingTypes },}  = useAddPropertySession()
+    const { activeSession:{id:propertyId, _propertyBookingTypes:selectedPropertyBookingTypes, customPropertyBookingTypes },}  = useAddPropertySession()
 
 
     const {isLoading:isPropertyBookingTypeLoading, propertyBookingTypes} = usePropertyBookingTypes()
@@ -70,16 +70,16 @@ export default function BookingType() {
         if(selectedCustomPropertyBookingTypes.length>0)
             updateProperty({propertyId, 
                 data:{  
-                          propertyBookingTypes: selectedPropertyBookingTypes,
+                         _propertyBookingTypes: selectedPropertyBookingTypes,
                     customPropertyBookingTypes: selectedCustomPropertyBookingTypes,
-                    sessionStatus: 'property-details' 
+                                 sessionStatus: 'property-details' 
                 }})
         else{
             updateProperty({propertyId, 
                 data:{
-                    propertyBookingTypes: selectedPropertyBookingTypes,
+                         _propertyBookingTypes: selectedPropertyBookingTypes,
                     customPropertyBookingTypes: [],
-                    sessionStatus: 'property-details' 
+                                 sessionStatus: 'property-details' 
                         }
                     })
         }

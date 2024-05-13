@@ -23,7 +23,7 @@ export default function PropertyDetails({data, nextPage, previousPage}) {
     const { isLoading, propertyFeatures } = usePropertyFeatures()
     // const { selectedPropertyFeatures, customPropertyFeatures } = useProperty()   
 
-    const { activeSession:{id:propertyId, title, description, propertyFeatures:selectedPropertyFeatures, customPropertyFeatures }}  = useAddPropertySession()
+    const { activeSession:{id:propertyId, title, description, _propertyFeatures:selectedPropertyFeatures, customPropertyFeatures }}  = useAddPropertySession()
 
     const [propertyTitle, setPropertyTitle]=useState(title)
     const [propertyDescription, setPropertyDescription] = useState(description)
@@ -91,7 +91,7 @@ export default function PropertyDetails({data, nextPage, previousPage}) {
                 data:{      
                             title: propertyTitle,
                       description: propertyDescription,
-                 propertyFeatures: selectedPropertyFeatures,
+                _propertyFeatures: selectedPropertyFeatures,
            customPropertyFeatures: selectedCustomPropertyFeatures,
                     sessionStatus: 'property-location' 
                 }})
@@ -100,7 +100,7 @@ export default function PropertyDetails({data, nextPage, previousPage}) {
                 data:{
                           title: propertyTitle,
                     description: propertyDescription,
-               propertyFeatures: selectedPropertyFeatures,
+              _propertyFeatures: selectedPropertyFeatures,
          customPropertyFeatures: [],
                   sessionStatus: 'property-location' 
                         }

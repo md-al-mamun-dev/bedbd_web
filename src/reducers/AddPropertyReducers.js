@@ -126,7 +126,8 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                         ...initialData,
                     activeSession: {
                         ...initialData['activeSession'],
-                        propertyType: data
+                        // propertyType: data
+                        _propertyType: data
                     }
                     }
         }
@@ -137,8 +138,8 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                     ...initialData, 
                     activeSession:{
                         ...initialData['activeSession'], 
-                        propertyStates:[
-                                ...initialData['activeSession']['propertyStates'],
+                        _propertyStates:[
+                                ...initialData['activeSession']['_propertyStates'],
                                 data
                             ]
                     }
@@ -149,7 +150,7 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                 ...initialData, 
                 activeSession:{
                     ...initialData['activeSession'], 
-                    propertyStates: initialData['activeSession']['propertyStates'].filter(i=>i!==data)
+                    _propertyStates: initialData['activeSession']['_propertyStates'].filter(i=>i!==data)
                 }
             }
             
@@ -200,8 +201,8 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                     ...initialData, 
                     activeSession:{
                         ...initialData['activeSession'], 
-                        propertyBookingTypes:[
-                                ...initialData['activeSession']['propertyBookingTypes'],
+                        _propertyBookingTypes:[
+                                ...initialData['activeSession']['_propertyBookingTypes'],
                                 data
                             ]
                     }
@@ -212,7 +213,7 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                 ...initialData, 
                 activeSession:{
                     ...initialData['activeSession'], 
-                    propertyBookingTypes: initialData['activeSession']['propertyBookingTypes'].filter(i=>i!==data)
+                    _propertyBookingTypes: initialData['activeSession']['_propertyBookingTypes'].filter(i=>i!==data)
                 }
             }
             
@@ -262,8 +263,8 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                     ...initialData, 
                     activeSession:{
                         ...initialData['activeSession'], 
-                        propertyFeatures:[
-                                ...initialData['activeSession']['propertyFeatures'],
+                        _propertyFeatures:[
+                                ...initialData['activeSession']['_propertyFeatures'],
                                 data
                             ]
                     }
@@ -274,7 +275,7 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                 ...initialData, 
                 activeSession:{
                     ...initialData['activeSession'], 
-                    propertyFeatures: initialData['activeSession']['propertyFeatures'].filter(i=>i!==data)
+                    _propertyFeatures: initialData['activeSession']['_propertyFeatures'].filter(i=>i!==data)
                 }
             }
             
@@ -455,6 +456,58 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                             }
                 }
         }
+        case 'addProperty/address-aptFloor':{
+            return { 
+                            ...initialData,
+                            activeSession:{
+                                ...initialData['activeSession'],
+                                address: {
+                                    ...initialData['activeSession']['address'],
+                                    aptFloor: data
+                                },
+                            },
+                            
+                }
+        }
+        case 'addProperty/address-streetAddress':{
+            return { 
+                            ...initialData,
+                            activeSession:{
+                                ...initialData['activeSession'],
+                                address: {
+                                    ...initialData['activeSession']['address'],
+                                    streetAddress: data
+                                },
+                            },
+                            
+                }
+        }
+        case 'addProperty/address-addressOne':{
+            return { 
+                            ...initialData,
+                            activeSession:{
+                                ...initialData['activeSession'],
+                                address: {
+                                    ...initialData['activeSession']['address'],
+                                    addressOne: data
+                                },
+                            },
+                            
+                }
+        }
+        case 'addProperty/address-addressTwo':{
+            return { 
+                            ...initialData,
+                            activeSession:{
+                                ...initialData['activeSession'],
+                                address: {
+                                    ...initialData['activeSession']['address'],
+                                    addressTwo: data
+                                },
+                            },
+                            
+                }
+        }
         
 
         case 'addProperty/city':{
@@ -616,9 +669,9 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                 ...initialData, 
                 activeSession:{
                     ...initialData['activeSession'], 
-                    amenities: initialData['activeSession']['amenities'].includes(data) 
-                                    ? initialData['activeSession']['amenities'].filter(i=>i!==data)
-                                    : [...initialData['activeSession']['amenities'], data]
+                    _amenities: initialData['activeSession']['_amenities'].includes(data) 
+                                    ? initialData['activeSession']['_amenities'].filter(i=>i!==data)
+                                    : [...initialData['activeSession']['_amenities'], data]
                 }
             } 
         }
@@ -630,9 +683,9 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                 ...initialData, 
                 activeSession:{
                     ...initialData['activeSession'], 
-                    homeRules: initialData['activeSession']['homeRules'].includes(data) 
-                                    ? initialData['activeSession']['homeRules'].filter(i=>i !== data)
-                                    : [...initialData['activeSession']['homeRules'], data]
+                    _homeRules: initialData['activeSession']['_homeRules'].includes(data) 
+                                    ? initialData['activeSession']['_homeRules'].filter(i=>i !== data)
+                                    : [...initialData['activeSession']['_homeRules'], data]
                 }
             } 
         }

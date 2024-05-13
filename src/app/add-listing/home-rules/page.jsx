@@ -29,7 +29,7 @@ export default function HomeRules() {
     const router = useRouter()
     const { isLoading, homeRules : homeRulesData } = useHomeRules() 
 
-    const {activeSession: { id:propertyId, homeRules:selectedHomeRules,checkInTime, checkOutTime, timezone, customHomeRules}, } = useAddPropertySession()
+    const {activeSession: { id:propertyId, _homeRules:selectedHomeRules,checkInTime, checkOutTime, timezone, customHomeRules}, } = useAddPropertySession()
     const {  timeZone:timezoneData } = useProperty()
 
 
@@ -67,10 +67,12 @@ export default function HomeRules() {
         e.preventDefault()
         updateProperty({propertyId, 
             data:{
-                homeRules:selectedHomeRules,
+                _homeRules:selectedHomeRules,
                 customHomeRules, 
                 checkInTime,
-                checkOutTime
+                checkOutTime,
+                sessionStatus:'images'
+
             }})
         moveToNextPage()
         // router.push('/add-listing/accommodation-details')

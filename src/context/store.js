@@ -22,19 +22,38 @@ export const store = {
                 title:'',
                 description:'',
 
-                propertyType:'',
-                propertyStates:[],
+                // propertyType:'',
+                _hosts:[],
+                _propertyType:'',
+                _propertyStates:[],
+                _propertyBookingTypes:[],
+                _propertyFeatures:[],
+                _amenities:[],
+                _homeRules:[],
+
+                address:{    aptFloor: '',
+                        streetAddress: '',
+                           addressOne: '',
+                           addressTwo: ''},
+
+                // propertyStates:[],
+
                 customPropertyStates:[],
 
-                propertyBookingTypes:[],
+                // propertyBookingTypes:[],
+
+
                 customPropertyBookingTypes:[],
 
-                propertyFeatures:[],
+                // propertyFeatures:[],
+
                 customPropertyFeatures:[],
 
                 amenities:[],
 
+
                 homeRules:[],
+
                 customHomeRules:[],
 
                 checkInTime:'11:30 AM',
@@ -212,6 +231,9 @@ export const store = {
     reservation:{
         propertyId:'',
         hosts:[],
+
+        
+        _hosts:[],
         // hostRegistrationId:'',
         clientRegistrationId:'',
         date: ['',''],

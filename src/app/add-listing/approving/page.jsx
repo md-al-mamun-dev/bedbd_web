@@ -64,7 +64,13 @@ export default function Approving() {
       }
     function onContinueBtnClick(e) {
         e.preventDefault()
-        updateProperty({propertyId:propertyId, data: { approvingMethod, genderPreference } })
+        updateProperty({
+            propertyId:propertyId, 
+            data: { 
+                approvingMethod, 
+                genderPreference,
+                sessionStatus:'complete'
+            } })
         // dispatch({type:'property/approvingMethod', data:approvingMethod})
         // dispatch({type:'property/genderPreference', data:genderPreference})
         // nextPage()

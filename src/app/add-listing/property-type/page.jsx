@@ -30,13 +30,8 @@ export default function PropertyType() {
     // const propertyData  = useProperty()
     const dispatch = useAddPropertySessionDispatch()
 
-    const { activeSession:{id:propertyId, propertyType},}  = useAddPropertySession()
-    const { activeSession }  = useAddPropertySession()
+    const { activeSession:{id:propertyId, _propertyType:propertyType},}  = useAddPropertySession()
 
-
-
-    console.log(activeSession)
-    console.log(typeof propertyType)
 
     const router = useRouter()
 
@@ -66,7 +61,12 @@ export default function PropertyType() {
         e.preventDefault()
         console.log(e)
 
-        updateProperty({propertyId, data:{propertyType: activeSession['propertyType'], sessionStatus: 'view-property-type' }})
+        updateProperty({
+            propertyId, 
+            data:{ 
+                _propertyType: propertyType, 
+                sessionStatus: 'view-property-type' 
+            }})
         router.push('/add-listing/view-property-type')
     }
 

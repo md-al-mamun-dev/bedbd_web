@@ -155,8 +155,7 @@ export default function AccommodationDetails() {
                     roomCount:nonZeroRoomCount,
                     bedCount: nonZeroBedCount,
                     guestCount:nonZeroGuestCount,
-
-                     sessionStatus: 'amenities'
+                    sessionStatus: 'amenities'
                 }})
         router.push('/add-listing/amenities')
     }

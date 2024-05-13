@@ -15,6 +15,7 @@ const client = new MongoClient(db_connection_uri, {
 
 async function findOwnersProperty(ownersUserId) {
 
+  console.log(typeof ownersUserId)
   try {
     await client.connect();
     const database = client.db('bedbd');
@@ -22,18 +23,15 @@ async function findOwnersProperty(ownersUserId) {
 
     const findQuery = {
                             ownerId: ownersUserId,
-                      sessionStatus: { 
-                                      $ne: 'complete' 
-                                    }
+                      // sessionStatus: { 
+                      //                 $ne: 'complete' 
+                      //               }
                       };
 
     try {
       // const findResult = await propertyListingCollection.find(findQuery);
-      // const resultArray = await propertyListingCollection.find(findQuery).toArray();
-
-      const resultArray = await propertyListingCollection.find(findQuery).toArray();
-
-
+      const resultArray = await propertyListingCollection.find({ ownerId: ownersUserId}).toArray();
+      console.log(resultArray)
       if(resultArray.length > 0){
         return resultArray
       }else{
@@ -42,14 +40,14 @@ async function findOwnersProperty(ownersUserId) {
             ownerId: ownersUserId , 
             // isCreateSessionActive: true,
             isPublished:false,
-            hosts:[ownersUserId],
+            _hosts:[ownersUserId],
             sessionStatus:'property-type',
             _createAt: new Date()
           })
 
           return [newPropertyResult]
         } catch (error) {
-          
+          console.log(error)
         }
       }
       // if(resultArray.length < 1){
@@ -111,14 +109,14 @@ export async function PATCH(request, response) {
 
   function assignObjectOnUpdateData(data) {
     for (let key in data) {
-      if(key === 'propertyType'){
+      if(key === '_propertyType'  || key === '_hosts'){
         data[key] = new ObjectId(data[key])
       }else if(
-           key === 'propertyStates' 
-        || key === 'propertyBookingTypes'
-        || key === 'propertyFeatures' 
-        || key === 'amenities' 
-        || key === 'homeRules' ){
+           key === '_propertyStates' 
+        || key === '_propertyBookingTypes'
+        || key === '_propertyFeatures' 
+        || key === '_amenities' 
+        || key === '_homeRules' ){
         data[key] = data[key].map(item => new ObjectId(item))
       }
       else{

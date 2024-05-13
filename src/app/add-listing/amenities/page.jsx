@@ -27,7 +27,7 @@ export default function Amenities() {
   // const { isLoading, amenities:amenitiesData } = useAmenities()
   const { isLoading, amenities:amenitiesData } = usePropertyAmenities()
 
-  const { activeSession: {id:propertyId, amenities:selectedAmenities}} = useAddPropertySession()
+  const { activeSession: {id:propertyId, _amenities:selectedAmenities}} = useAddPropertySession()
   console.log(selectedAmenities)
 
   // const { selectedAmenities }  = useProperty()
@@ -82,7 +82,8 @@ async function updateProperty({propertyId, data}){
 
     updateProperty({propertyId, 
         data:{
-          amenities: selectedAmenities
+          _amenities: selectedAmenities,
+          sessionStatus: 'home-rules'
         }})
     moveToNextPage()
     // router.push('/add-listing/accommodation-details')

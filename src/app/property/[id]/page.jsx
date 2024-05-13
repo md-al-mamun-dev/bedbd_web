@@ -16,6 +16,8 @@ import { ImageDetails } from './ImageDetails'
 import PostReview from './PostReview'
 import PaymentProvider from '@/context/payment/paymentContext'
 import mongoose from "mongoose";
+// import { ObjectId } from 'mongodb'
+const objectId = require('mongodb').ObjectId; 
 
 import propertyService from '@/service/PropertyService'
 import storageService from '@/service/StorageService'
@@ -52,7 +54,31 @@ async function getData(id) {
     //                   sessionStatus: {  $ne: 'complete'  } };
     console.log(id)
     const resultArray = await propertyListingCollection.findOne({ _id: new ObjectId(id) });
-    console.log(resultArray)
+    const resultArray2 = await propertyListingCollection.aggregate([
+        {
+            $match: {
+                _id: new ObjectId(id) // Convert id string to ObjectId
+            }
+        },
+        {
+            $lookup: {
+                from: 'homeRules',
+                localField: 'homeRules',
+                foreignField: '_id', 
+                as: 'homeRulesData'
+            }
+        },
+        {
+            $lookup: {
+              from: "propertyAmenities",
+              localField: "amenities",
+              foreignField: "_id",
+              as: "amenitiesData"
+            }
+          }
+    ]).toArray();
+
+    console.log(resultArray2);
     await client.close();
 
     // const        APPWRITE_URL = process.env.APPWRITE_URL

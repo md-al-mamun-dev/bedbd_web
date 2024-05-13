@@ -72,11 +72,15 @@ export default function Availability() {
     function onContinueBtnClick(e) {
         e.preventDefault()
 
-        const updateData = { checkInPossibility, allowMoreThenMonth, isBookingExtend }
+        const updateData = { checkInPossibility, allowMoreThenMonth, isBookingExtend, sessionStatus:'approving' }
 
         if(allowMoreThenMonth && maxNightStayLimit>30){
             updateData['maxNightStayLimit'] = maxNightStayLimit
         }
+        // else{
+        //     dispatch({type:'addProperty/maxNightStayLimit', data:30})
+        //     updateData['maxNightStayLimit'] = 30
+        // }
         updateProperty({propertyId: propertyId, data: updateData })
         // const newValue = {
         //                     checkIn:checkInPossibility,

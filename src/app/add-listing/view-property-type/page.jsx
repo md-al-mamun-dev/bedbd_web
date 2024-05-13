@@ -17,8 +17,10 @@ export default function ViewPropertyType() {
 
   // const dispatch = useAddPropertySessionDispatch()
 
-  const { activeSession:{id:propertyId, propertyType},}  = useAddPropertySession()
+  const { activeSession:{id:propertyId, _propertyType: propertyType},}  = useAddPropertySession()
   const propertyListingData = usePropertyListingSession()
+  const { isLoading, propertyTypes} = usePropertyTypes()
+  
 
   const router = useRouter()
   // const { selectedPropertyType } = useProperty()
@@ -34,7 +36,6 @@ export default function ViewPropertyType() {
   if(propertyType === '' || propertyType.length < 1){
     moveToPreviousPage()
   }
-    const { isLoading, propertyTypes} = usePropertyTypes()
     const selectedProperty = propertyTypes.find(i=>i['id']===propertyType)
     return (
 

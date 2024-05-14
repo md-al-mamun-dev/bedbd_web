@@ -78,8 +78,8 @@ export const store = {
                 tax:1,
 
                 checkInpossibility:'',
-                allowMoreThenMonth:'',
-                isBookingExtend:'',
+                allowMoreThenMonth:false,
+                isBookingExtend:false,
                 maxNightStayLimit:30,
 
                 approvingMethod:'',

@@ -30,7 +30,7 @@ export async function GET(request, response) {
       try {
         await client.connect();
         const database = client.db('bedbd');
-        const propertyStateCollection = database.collection("propertyState");
+        const propertyStateCollection = database.collection("propertyStates");
         const result = await propertyStateCollection.find().toArray();
         if(result.length > 0){
           console.log(result)

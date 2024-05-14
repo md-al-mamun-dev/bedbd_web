@@ -117,7 +117,7 @@ export default function Availability() {
 
                         <label className="flex flex-align-center gap-24px">
                         {
-                            checkInPossibility !== 'asap' && checkInPossibility !== ''
+                            checkInPossibility === 'fixed' 
                                 ? <CircleCheckBig size={24} className='opacity-0_70' />
                                 : <Circle size={24} className='opacity-0_70' />
                         }
@@ -172,7 +172,7 @@ export default function Availability() {
                             // onClick={handleIsBookingExtendChange}
                         >
                         {
-                            !isBookingExtend
+                            isBookingExtend 
                                 ? <CircleCheckBig size={24} className='opacity-0_70' />
                                 :   <Circle size={24} className='opacity-0_70' />
                         }
@@ -186,7 +186,7 @@ export default function Availability() {
                             // onClick={handleIsBookingExtendChange}
                         >
                         {
-                            isBookingExtend
+                            !isBookingExtend 
                                 ? <CircleCheckBig size={24} className='opacity-0_70' />
                                 :   <Circle size={24} className='opacity-0_70' />
                         }

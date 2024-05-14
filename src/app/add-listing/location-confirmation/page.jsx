@@ -169,7 +169,21 @@ export default function LocationConfirmation(){
         //     address_compose = address_compose + address['addressTwo']
         // }
         console.log(address)
-         
+         dispatch({
+            type: 'addProperty/city', 
+            data: city })
+         dispatch({
+            type: 'addProperty/district', 
+            data: district })
+         dispatch({
+            type: 'addProperty/thana', 
+            data: thana })
+         dispatch({
+            type: 'addProperty/zipcode', 
+            data: postZipCode })
+
+
+
 
         updateProperty({propertyId, 
             data:{
@@ -285,7 +299,7 @@ export default function LocationConfirmation(){
 
                         <input 
                             value={thana}
-                            onChange={e=>setThana({...thana, 'name':e.target.value })}
+                            onChange={e=>setThana(e.target.value)}
                             className='w-100 fs-regular mr-top-16px clr-neutral-500 border-neutral-500 p-16px-24px radius-8' 
                             placeholder="Thana" name='thana'/>
 

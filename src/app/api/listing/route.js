@@ -20,6 +20,8 @@ async function findOwnersProperty(ownersUserId) {
     await client.connect();
     const database = client.db('bedbd');
     const propertyListingCollection = database.collection("listingProperty");
+    const registeredUserInfoCollection = database.collection("registeredUserInfo");
+
 
     const findQuery = {
                             ownerId: ownersUserId,
@@ -35,20 +37,38 @@ async function findOwnersProperty(ownersUserId) {
       if(resultArray.length > 0){
         return resultArray
       }else{
-        try {
-          const newPropertyResult = await propertyListingCollection.insertOne({
-            ownerId: ownersUserId , 
-            // isCreateSessionActive: true,
-            isPublished:false,
-            _hosts:[ownersUserId],
-            sessionStatus:'property-type',
-            _createAt: new Date()
-          })
 
-          return [newPropertyResult]
+        try {
+          const registeredUserInfo = await registeredUserInfoCollection.findOne({ userId: ownersUserId })
+          if(registeredUserInfo['_id']){
+            try {
+
+              const newPropertyResult = await propertyListingCollection.insertOne({
+                ownerId: ownersUserId , 
+                // isCreateSessionActive: true,
+                isPublished:false,
+                isAvailable:true,
+                _hosts:[new ObjectId(registeredUserInfo['_id'])],
+                sessionStatus:'property-type',
+                _createAt: new Date()
+              })
+    
+              return [newPropertyResult]
+            } catch (error) {
+              // send error for property creation
+              console.log(error)
+            }
+          }else{
+          // send Error user not registered 
+
+          }
+          
         } catch (error) {
-          console.log(error)
+          // send Error user not registered 
         }
+
+
+        
       }
       // if(resultArray.length < 1){
         

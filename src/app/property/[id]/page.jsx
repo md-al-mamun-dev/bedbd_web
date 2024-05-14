@@ -44,7 +44,8 @@ const client = new MongoClient(db_connection_uri, {
     }
   });
 
-async function getData(id) {  
+async function getData(id) {
+    console.log(id)
 
     await client.connect();
     const database = client.db('bedbd');
@@ -53,32 +54,64 @@ async function getData(id) {
     // const findQuery = {     ownerId: ownersUserId,
     //                   sessionStatus: {  $ne: 'complete'  } };
     console.log(id)
-    const resultArray = await propertyListingCollection.findOne({ _id: new ObjectId(id) });
-    const resultArray2 = await propertyListingCollection.aggregate([
-        {
-            $match: {
-                _id: new ObjectId(id) // Convert id string to ObjectId
-            }
-        },
-        {
-            $lookup: {
-                from: 'homeRules',
-                localField: 'homeRules',
-                foreignField: '_id', 
-                as: 'homeRulesData'
-            }
-        },
-        {
-            $lookup: {
-              from: "propertyAmenities",
-              localField: "amenities",
-              foreignField: "_id",
-              as: "amenitiesData"
-            }
-          }
-    ]).toArray();
+    // const resultArray = await propertyListingCollection.findOne({ _id: new ObjectId(id) });
+    const result = await propertyListingCollection.aggregate([
+                                                                        {
+                                                                            $match: {
+                                                                                _id: new ObjectId(id) // Convert id string to ObjectId
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            $lookup: {
+                                                                                from: 'registeredUserInfo',
+                                                                                localField: '_hosts',
+                                                                                foreignField: '_id', 
+                                                                                as: 'hosts'
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            $lookup: {
+                                                                                from: 'homeRules',
+                                                                                localField: '_homeRules',
+                                                                                foreignField: '_id', 
+                                                                                as: 'homeRules'
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            $lookup: {
+                                                                            from: "propertyAmenities",
+                                                                            localField: "_amenities",
+                                                                            foreignField: "_id",
+                                                                            as: "amenities"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            $lookup: {
+                                                                            from: "propertyFeatures",
+                                                                            localField: "_propertyFeatures",
+                                                                            foreignField: "_id",
+                                                                            as: "propertyFeatures"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            $lookup: {
+                                                                            from: "propertyBookingTypes",
+                                                                            localField: "_propertyBookingTypes",
+                                                                            foreignField: "_id",
+                                                                            as: "propertyBookingTypes"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            $lookup: {
+                                                                            from: "propertyState",
+                                                                            localField: "_propertyStates",
+                                                                            foreignField: "_id",
+                                                                            as: "propertyStates"
+                                                                            }
+                                                                        },
+                                                                    ]).toArray();
 
-    console.log(resultArray2);
+    console.log(result[0]);
     await client.close();
 
     // const        APPWRITE_URL = process.env.APPWRITE_URL
@@ -102,204 +135,257 @@ async function getData(id) {
     // const   users = new Users(client);
 
 
-    // try {
-    //     const data =  await databases.getDocument(
-    //                                 DB_ID,
-    //                                 PROPERTY_COLLECTION,
-    //                                 id)
+    try {
+        // const data =  await databases.getDocument(
+        //                             DB_ID,
+        //                             PROPERTY_COLLECTION,
+        //                             id)
 
-    //     const { 
-    //         description, 
-    //         propertyType, 
-    //         title, 
-    //         address,
-    //         isPublished, 
-    //         isAvailable, 
-    //         rent, 
-    //         currency, 
-    //         serviceFee, 
-    //         images,
-    //         amenities,
-    //         ownerId, 
-    //         hosts,
-    //         propertyBookingTypes,
-    //         customBookingTypesTitle,
-    //         customBookingTypesDescription,
+        const { 
 
-    //         homeRules,
-    //         customHomeRulesTitle,
-    //         customHomeRulesDescription,
-    //         propertyFeatures,
-    //         customFeaturesTitle,
-    //         customFeaturesDescription,
-    //         roomCount,
-    //         bedCount,
-    //         guestCount,
+            ownerId,
+            isPublished,
+
+            propertyType, 
+
+
+            propertyFeatures,
+            propertyBookingTypes,
+            propertyStates,
+
+            customPropertyStates,
+            customPropertyBookingTypes,
+            customPropertyFeatures,
+
+            title, 
+            description,
+
+            address,
+            location,
+            city,
+            country,
+            district,
+            thana,
+            timezone,
+            zipCode,
+
+
+            homeRules,
+            amenities,
+
+            bedCount,
+            guestCount,
+            roomCount,
+
+            checkInTime,
+            checkOutTime,
+            images,
+
+
+
+
+
+            isAvailable, 
+            rent, 
+            currency, 
+            serviceFee, 
+
+            
+            hosts,
+
+   } = result[0]
+        // const { 
+        //     description,
+        //     propertyType, 
+        //     title, 
+        //     address,
+        //     isPublished, 
+        //     isAvailable, 
+        //     rent, 
+        //     currency, 
+        //     serviceFee, 
+        //     images,
+        //     amenities,
+        //     ownerId, 
+        //     hosts,
+        //     propertyBookingTypes,
+        //     customBookingTypesTitle,
+        //     customBookingTypesDescription,
+
+        //     homeRules,
+        //     customHomeRulesTitle,
+        //     customHomeRulesDescription,
+        //     propertyFeatures,
+        //     customFeaturesTitle,
+        //     customFeaturesDescription,
+        //     roomCount,
+        //     bedCount,
+        //     guestCount,
     
-    //         propertyRatingReview    } = data
+        //     propertyRatingReview    } = data
 
 
-    //         const ratingReviewResult =  await databases
-    //                                         .listDocuments(
-    //                                             DB_ID,
-    //                                             RATING_REVIEW_COLLECTION,
-    //                                             [Query.equal("propertyId", [data['$id']])])
+            const ratingReviewResult =  await databases
+                                            .listDocuments(
+                                                DB_ID,
+                                                RATING_REVIEW_COLLECTION,
+                                                [Query.equal("propertyId", [data['$id']])])
 
                                     
                                                 
-    //         const ratingReviews = ratingReviewResult.documents.map(item =>
-    //                                 (Object.entries(item)
-    //                                         .reduce((acc, [key, value]) => {
-    //                                             if (key.endsWith('Rating')) {
-    //                                                 const ratingKey = key.replace('Rating', ''); // Remove 'Rating' from the key
-    //                                                 acc.ratings = acc.ratings || {}; // Create ratings object if it doesn't exist
-    //                                                 acc.ratings[ratingKey] = value; // Assign the rating value to the ratings object
-    //                                             }else if(key=== 'author'){
-    //                                                 acc[key] = {
-    //                                                                         name: value['name'], 
-    //                                                                  description: value['description'],
-    //                                                                 profilePhoto: value['profilePhoto']
-    //                                                                                 .reduce((latest, current) => {
-    //                                                                                         const latestTime = new Date(latest['$updatedAt']).getTime();
-    //                                                                                         const currentTime = new Date(current['$updatedAt']).getTime();
-    //                                                                                         return currentTime > latestTime ? current : latest;
-    //                                                                                     })['profilePhotoID'],
-    //                                                                       badges: value['badges']
-    //                                                                                 .map(i=>({ badgeName: i['badgeName'],
-    //                                                                                                 icon: {
-    //                                                                                                         type: i['iconType'],
-    //                                                                                                         name: i['iconName'],
-    //                                                                                                         url:  i['iconUrl']
-    //                                                                                                     }
-    //                                                                                             }))
-    //                                                             }
-    //                                             }else if(key=== 'reviewText' || key === '$updatedAt'){
-    //                                                 acc[key] = value;
-    //                                             }
+            const ratingReviews = ratingReviewResult.documents.map(item =>
+                                    (Object.entries(item)
+                                            .reduce((acc, [key, value]) => {
+                                                if (key.endsWith('Rating')) {
+                                                    const ratingKey = key.replace('Rating', ''); // Remove 'Rating' from the key
+                                                    acc.ratings = acc.ratings || {}; // Create ratings object if it doesn't exist
+                                                    acc.ratings[ratingKey] = value; // Assign the rating value to the ratings object
+                                                }else if(key=== 'author'){
+                                                    acc[key] = {
+                                                                            name: value['name'], 
+                                                                     description: value['description'],
+                                                                    profilePhoto: value['profilePhoto']
+                                                                                    .reduce((latest, current) => {
+                                                                                            const latestTime = new Date(latest['$updatedAt']).getTime();
+                                                                                            const currentTime = new Date(current['$updatedAt']).getTime();
+                                                                                            return currentTime > latestTime ? current : latest;
+                                                                                        })['profilePhotoID'],
+                                                                          badges: value['badges']
+                                                                                    .map(i=>({ badgeName: i['badgeName'],
+                                                                                                    icon: {
+                                                                                                            type: i['iconType'],
+                                                                                                            name: i['iconName'],
+                                                                                                            url:  i['iconUrl']
+                                                                                                        }
+                                                                                                }))
+                                                                }
+                                                }else if(key=== 'reviewText' || key === '$updatedAt'){
+                                                    acc[key] = value;
+                                                }
                                                 
-    //                                             // else {
-    //                                             //     acc[key] = value; // Assign non-rating keys directly
-    //                                             // }
-    //                                             return acc;
-    //                                         }, {}))).sort((a, b) => {
-    //                                             const dateA = new Date(a['$updatedAt']);
-    //                                             const dateB = new Date(b['$updatedAt']);
-    //                                             return dateB - dateA; // Sort in descending order
-    //                                           });
+                                                // else {
+                                                //     acc[key] = value; // Assign non-rating keys directly
+                                                // }
+                                                return acc;
+                                            }, {}))).sort((a, b) => {
+                                                const dateA = new Date(a['$updatedAt']);
+                                                const dateB = new Date(b['$updatedAt']);
+                                                return dateB - dateA; // Sort in descending order
+                                              });
             
-    //         // console.log('rating review')
-    //         // console.log(ratingReviews[0])
-    //         // console.log(ratingReviews[0]['author']['profilePhoto'])
-    //         // console.log(ratingReviews[0]['author']['badges'])
+            // console.log('rating review')
+            // console.log(ratingReviews[0])
+            // console.log(ratingReviews[0]['author']['profilePhoto'])
+            // console.log(ratingReviews[0]['author']['badges'])
 
 
-    //         const _hosts = hosts.map(item=> {
+            const _hosts = hosts.map(item=> {
 
-    //                 const profilePhoto = item['profilePhoto'].reduce((latest, current) => {
-    //                                                                 const latestTime = new Date(latest.$updatedAt).getTime();
-    //                                                                 const currentTime = new Date(current.$updatedAt).getTime();
-    //                                                                 return currentTime > latestTime ? current : latest;
-    //                                                             }); 
-    //                 const badges = item['badges'].map(i=>({ badgeName: i['badgeName'],
-    //                                                         icon:{
-    //                                                             type: i['iconType'],
-    //                                                             name: i['iconName'],
-    //                                                             url: i['iconUrl']
-    //                                                             } 
-    //                                                         })) 
+                    const profilePhoto = item['profilePhoto'].reduce((latest, current) => {
+                                                                    const latestTime = new Date(latest.$updatedAt).getTime();
+                                                                    const currentTime = new Date(current.$updatedAt).getTime();
+                                                                    return currentTime > latestTime ? current : latest;
+                                                                }); 
+                    const badges = item['badges'].map(i=>({ badgeName: i['badgeName'],
+                                                            icon:{
+                                                                type: i['iconType'],
+                                                                name: i['iconName'],
+                                                                url: i['iconUrl']
+                                                                } 
+                                                            })) 
 
-    //                                 return  ({    id: item['$id'],
-    //                                             name: item['name'], 
-    //                                      description: item['description'], 
-    //                                     profilePhoto: profilePhoto['profilePhotoID'], 
-    //                             // userVerificationInfo: item['userVerificationInfo'],
-    //                                           badges: badges })})
+                                    return  ({    id: item['$id'],
+                                                name: item['name'], 
+                                         description: item['description'], 
+                                        profilePhoto: profilePhoto['profilePhotoID'], 
+                                // userVerificationInfo: item['userVerificationInfo'],
+                                              badges: badges })})
 
-    //         const _amenities = amenities.map(item=> ({
-    //                                        title: item['title'], 
-    //                                  description: item['description'], 
-    //                                         icon: item['icon'], 
-    //                                     category: item['category']
-    //                                 }))
+            const _amenities = amenities.map(item=> ({
+                                           title: item['title'], 
+                                     description: item['description'], 
+                                            icon: item['icon'], 
+                                        category: item['category']
+                                    }))
 
-    //         const _homeRules = homeRules.map(item=>({title: item['title'], description: item['description']}))
-    //         if(customHomeRulesTitle.length>0){
-    //             customHomeRulesTitle.forEach(item => {
-    //                 const textArray = item.split('_')
-    //                 const index = textArray[0]
-    //                 const title = textArray.slice(1).join('_')
-    //                 let description = '';
-    //                 customHomeRulesDescription.forEach(i=>{
-    //                     const txtArr = i.split('_')
-    //                     if(index === textArray[0] )
-    //                         description = textArray.slice(1).join('_')
-    //                 })
-    //                 _homeRules.push({ title, description })
-    //             })
-    //         }
+            const _homeRules = homeRules.map(item=>({title: item['title'], description: item['description']}))
+            if(customHomeRulesTitle.length>0){
+                customHomeRulesTitle.forEach(item => {
+                    const textArray = item.split('_')
+                    const index = textArray[0]
+                    const title = textArray.slice(1).join('_')
+                    let description = '';
+                    customHomeRulesDescription.forEach(i=>{
+                        const txtArr = i.split('_')
+                        if(index === textArray[0] )
+                            description = textArray.slice(1).join('_')
+                    })
+                    _homeRules.push({ title, description })
+                })
+            }
 
-    //         const bookingTypes = propertyBookingTypes.map(item=>({title: item['title'], description: item['description']}))
-    //         if(customBookingTypesTitle.length>0){
-    //             customBookingTypesTitle.forEach( item =>{
-    //                 const textArr = item.split('_')
-    //                 const idx = textArr[0]
-    //                 const title = textArr.slice(1).join('_')
-    //                 let description =''; 
-    //                 customBookingTypesDescription.forEach(i=>{ 
-    //                     const txtArr = i.split('_')
-    //                     if(idx === txtArr[0])
-    //                       description = txtArr.slice(1).join('_')
-    //                 })
-    //                 bookingTypes.push({ title, description })
-    //             })
-    //         }
-
-
-    //         const features = propertyFeatures.map(featureItem=>({title: featureItem['title'], description: featureItem['description']}))
-    //         if(customFeaturesTitle.length>0){
-    //             customFeaturesTitle.forEach(i=>{
-    //                 const textArr = i.split('_')
-    //                 const idx = textArr[0]
-    //                 const title = textArr.slice(1).join('_')
-    //                 let description =''; 
-    //                 customFeaturesDescription.forEach(item=>{ 
-    //                     const txtArr = item.split('_')
-    //                     if(idx == txtArr[0])
-    //                       description = txtArr.slice(1).join('_')
-    //                 })
-    //                 features.push({ title, description })
-    //             })                              
-    //         }
+            const bookingTypes = propertyBookingTypes.map(item=>({title: item['title'], description: item['description']}))
+            if(customBookingTypesTitle.length>0){
+                customBookingTypesTitle.forEach( item =>{
+                    const textArr = item.split('_')
+                    const idx = textArr[0]
+                    const title = textArr.slice(1).join('_')
+                    let description =''; 
+                    customBookingTypesDescription.forEach(i=>{ 
+                        const txtArr = i.split('_')
+                        if(idx === txtArr[0])
+                          description = txtArr.slice(1).join('_')
+                    })
+                    bookingTypes.push({ title, description })
+                })
+            }
 
 
-    //     if(data['$id'])
-    //         return { 
-    //             id: data['$id'],
-    //             description, 
-    //             propertyType, 
-    //             title, 
-    //             address,
-    //             isPublished, 
-    //             isAvailable, 
-    //             rent, 
-    //             currency, 
-    //             serviceFee, 
-    //             images,    
-    //             amenities:_amenities,    
-    //             ownerId, 
-    //             hosts:_hosts,
-    //             roomCount,
-    //             bedCount,
-    //             guestCount,
-
-    //             features:[...bookingTypes, ...features ],
-    //             homeRules: _homeRules,    
-    //             propertyRatingReview:ratingReviews   } 
+            const features = propertyFeatures.map(featureItem=>({title: featureItem['title'], description: featureItem['description']}))
+            if(customFeaturesTitle.length>0){
+                customFeaturesTitle.forEach(i=>{
+                    const textArr = i.split('_')
+                    const idx = textArr[0]
+                    const title = textArr.slice(1).join('_')
+                    let description =''; 
+                    customFeaturesDescription.forEach(item=>{ 
+                        const txtArr = item.split('_')
+                        if(idx == txtArr[0])
+                          description = txtArr.slice(1).join('_')
+                    })
+                    features.push({ title, description })
+                })                              
+            }
 
 
-    // } catch (err) {
-    //     return false
-    // }
+        if(data['$id'])
+            return { 
+                id: data['$id'],
+                description, 
+                propertyType, 
+                title, 
+                address,
+                isPublished, 
+                isAvailable, 
+                rent, 
+                currency, 
+                serviceFee, 
+                images,    
+                amenities:_amenities,    
+                ownerId, 
+                hosts:_hosts,
+                roomCount,
+                bedCount,
+                guestCount,
+
+                features:[...bookingTypes, ...features ],
+                homeRules: _homeRules,    
+                propertyRatingReview:ratingReviews   } 
+
+
+    } catch (err) {
+        return false
+    }
 
 
   }
@@ -307,6 +393,7 @@ async function getData(id) {
 
 
 export default async function Property({ params}) {
+    console.log(params)
 
 
         const result = getData(params['id'])

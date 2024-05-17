@@ -3,6 +3,7 @@ import LucidIcon from '@/components/LucidIcon'
 import timeSubtraction from '@/components/Utility/timeSubtraction'
 
 const HomeRules = ({data}) => {
+  console.log(data)
 // let rules = []
 
 // const generatePeopleRestriction = (restrictionData)=>{
@@ -54,7 +55,7 @@ const HomeRules = ({data}) => {
         <div className={`${styles.rules}`}>
             {
                 data.map(item=>(
-                <div className='flex gap-16'>
+                <div key={item['_id']} className='flex gap-16'>
                     <LucidIcon name='info' size={24} />
                     <div>
                         {item['title']}

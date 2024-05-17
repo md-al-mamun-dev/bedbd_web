@@ -5,9 +5,12 @@ const Facilities = ({data}) => {
 
     const {roomCount, guestCount } =  data
 
-    const _count = guestCount.map(item => (parseInt(item.split(' ')[0])) )
-    const totalGuestnumber = _count.reduce((acc, curr) => acc + curr, 0)
-    const minGuestCount = Math.max(..._count);
+    // const _count = guestCount.map(item => (parseInt(item.split(' ')[0])) )
+    // const totalGuestnumber = _count.reduce((acc, curr) => acc + curr, 0)
+    // const minGuestCount = Math.max(..._count);
+
+    const minGuestCount = guestCount.find(obj => obj.type === 'Adult')['count']
+    const maxGuestCount =  guestCount.map(obj => obj.count).reduce((acc, val) => acc + val, 0)
 
     
     // let guestText = ''
@@ -50,20 +53,20 @@ const Facilities = ({data}) => {
                 {
                     roomCount.map(
                         item => {
-                            const icon = icons.find(i => i['title']=== item.split(' ').splice(1).join('').toLowerCase())
+                            const icon = icons.find(i => i['title']=== item['name'].replace(/ /g, '').toLowerCase())
 
                             return ( 
                                 <div className={`${styles.service_item}`} >
                                     {
                                         icon 
                                             && ((icon['iconType'] === 'lucidicon') 
-                                            &&  <LucidIcon name={icon['iconName']} size={32} />)
+                                            &&  <LucidIcon className='opacity-0_70' name={icon['iconName']} size={32} />)
                                         // (icon['iconType'] === 'lucidicon')
                                         // && <LucidIcon name={icon['iconName']} size={32} />
                                         // (srv.icon.type === 'lucidicon') 
                                         // &&  <LucidIcon name={srv.icon.iconName} size={32} />
                                     }
-                                    <h1>{item}</h1>
+                                    <h1>{item['count']+' '+item['name']}</h1>
                                 </div>
                             )}
                         )
@@ -72,7 +75,7 @@ const Facilities = ({data}) => {
                     <div className={`${styles.service_item}`} >
 
                         <LucidIcon name='users-round' size={32} />
-                    <h1>{minGuestCount+'/'+totalGuestnumber+' Guests'}</h1>
+                    <h1>{minGuestCount+'/'+maxGuestCount+' Guests'}</h1>
                 </div>
                 }
             </div>

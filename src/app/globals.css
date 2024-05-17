@@ -264,6 +264,9 @@ a:visited {
 .max-width-48px{
 
 }
+.max-width-490px{
+  max-width: 490px;
+}
 .max-width-1024px{
   max-width: 1024px;
 }
@@ -472,6 +475,9 @@ a:visited {
 }
 .top-57px{
   top: 57px;
+}
+.top-4px{
+  top: 4px;
 }
 .top-40px{
   top: 40px;
@@ -1326,6 +1332,15 @@ a:visited {
 .w-100{
   width: 100%;
 }
+.w-100px{
+  width: 100px;
+}
+.w-50px{
+  width: 50px;
+}
+.w-75px{
+  width: 75px;
+}
 .w-100-24px{
   width: calc(100% - 24px);
 }
@@ -1555,6 +1570,15 @@ a:visited {
 }
 .min-h-100px{
   min-height: 100px;
+}
+.h-100px{
+  height: 100px;
+}
+.h-75px{
+  height: 75px;
+}
+.h-50px{
+  height: 50px;
 }
 .min-h-120px{
   min-height: 120px;

@@ -26,7 +26,7 @@ export default function usePropertyListingSession(){
                 setIsLoading(()=>true)
                 try {
                     const response = await fetch(query , {
-                        method: 'GET',
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`,

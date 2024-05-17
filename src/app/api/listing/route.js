@@ -25,14 +25,14 @@ async function findOwnersProperty(ownersUserId) {
 
     const findQuery = {
                             ownerId: ownersUserId,
-                      // sessionStatus: { 
-                      //                 $ne: 'complete' 
-                      //               }
+                      sessionStatus: { 
+                                      $ne: 'complete' 
+                                    }
                       };
 
     try {
       // const findResult = await propertyListingCollection.find(findQuery);
-      const resultArray = await propertyListingCollection.find({ ownerId: ownersUserId}).toArray();
+      const resultArray = await propertyListingCollection.find(findQuery).toArray();
       console.log(resultArray)
       if(resultArray.length > 0){
         return resultArray
@@ -87,7 +87,7 @@ async function findOwnersProperty(ownersUserId) {
   }
 }
 
-export async function GET(request, response) {
+export async function POST(request, response) {
 
   const token = request.headers.get('Authorization').split(' ')[1];
   const userClient = new Client()

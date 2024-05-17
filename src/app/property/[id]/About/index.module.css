@@ -25,8 +25,9 @@
 .about > .about_items > .about_item > .decorative_plus_icon{
     position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 4px;
+    /* top: 50%; */
+    /* transform: translateY(-50%); */
 }
 
 .about > .about_items > .about_item > .item_heading{

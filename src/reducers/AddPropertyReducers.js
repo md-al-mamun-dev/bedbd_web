@@ -172,6 +172,7 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                     }
                 }
         }
+        
         case 'addProperty/toggleCustomPropertyStateSelection':{
 
             return { 

@@ -5,6 +5,8 @@ import storageService from '@/service/StorageService'
 
 
 const ImageGallery = ({ data, totalImageCount}) => {
+    
+    console.log(totalImageCount)
 const imageViewLimit = 4
 // const imageUrlPrefix = ''
 const imageGalleryContainerId = 'image-gallery'
@@ -17,9 +19,16 @@ const imageIdPrefix = 'gallery_img_'
             data.map((img, idx)=> {
                 const imageId =  imageIdPrefix+idx
 
-                return <AnImage key={idx} imgDetailContainerId={imageDetailContainerId} imgId={imageId} data={img} />})
+                return <AnImage 
+                            key={idx} 
+                            imgDetailContainerId={imageDetailContainerId} 
+                            imgId={imageId} data={img} />})
         }
-        <MorePhotoBtn imgIdPrefix='detail_image_' imageDetailContainerId={imageDetailContainerId}  moreImageCount={totalImageCount-imageViewLimit}/>       
+        {
+        
+        (totalImageCount > 3) 
+            && <MorePhotoBtn imgIdPrefix='detail_image_' imageDetailContainerId={imageDetailContainerId}  moreImageCount={totalImageCount-imageViewLimit}/>       
+        }
     </div>
     )
 }

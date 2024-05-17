@@ -167,11 +167,7 @@ export async function POST(request, response) {
                 const listingPropertyCollection = database.collection("listingProperty");
                 const imageCollection = database.collection('images');
                 
-                console.log(propertyId)
-                
                 const result = await listingPropertyCollection.findOne({ _id: new ObjectId(propertyId) });
-
-                console.log(result)
 
                 // const allImages = imagesData.map(img => ({ imageUrl: `${img['fileName']}`,  isDeleted: img['isDeleted'] }) );
                 const images = ()=> typeof result === 'object' && result.hasOwnProperty('images')

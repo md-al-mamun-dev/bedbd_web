@@ -6,8 +6,10 @@ import ContacHostBtn from './ContacHostBtn';
 import storageService from '@/service/StorageService';
 
 const Host = ({data, reviewCount}) => {
+    console.log(data)
     const host = data[0]
 
+    // return <div>...</div>
     const calculateResponseTime = (responseTime)=>{         
         const resTime = responseTime /3600000
         const floorValue = Math.floor(resTime);
@@ -18,17 +20,41 @@ const Host = ({data, reviewCount}) => {
         return (fractionToFloor < fractionToCeil) ? floorValue : ceilValue
     }
 
+    function getInitials(name) {
+        if (!name) return '';
+        const words = name.trim().split(/\s+/);
+        let initials = words[0].charAt(0);
+        if (words.length > 1) {
+            initials += words[1].charAt(0);
+        }
+        return initials;
+    }
+ 
     return  <>
                 <div className={`${styles.host}`}>
                     <div className='flex gap-16'>
-                        <div className={`${styles.image_wrapper}`}>
-                            <Image className={`${styles.host_image}`} src={storageService.getProfileImage(host['profilePhoto'])} height={72} width={72}/>
-                        </div>
+                        {
+                            data?.profilePhoto !== undefined
+                                ? <div className={`${styles.image_wrapper} `}>
+                                        <Image 
+                                            className={`${styles.host_image}`} 
+                                            src={host['profilePhoto']} 
+                                            height={72} width={72}/>
+                                    </div> 
+                                : <div className={`${styles.image_wrapper} bg-primary-400 round w-75px h-75px position-relative`}>
+                                        <div className=' fs-875 fw-slightly-dark absolute-center'>{getInitials(host['name'])}</div>
+                                    </div>
+                            // data.includes('profilePhoto')
+                            //     ? <div>....</div>
+                            //     : <div>not having profile photo</div>
+                        }
+                         
                         <div className={`${styles.host_title_badge}`}>
                             <h3 className={`${styles.host_name}`}>{ 'Hosted By'+' '+ host['name']}</h3>
                             <div className={`${styles.host_badges}`}>
                                 {
-                                    host['badges'].map(
+                                    host['badges'].length > 0 
+                                    && host['badges'].map(
                                         badge=>(
                                             <div className={`${styles.badge_item}`}>
                                                 {

@@ -6,19 +6,21 @@ import useData from "@/context/data/useData";
 import getZoomLevelsResolution from "@/components/Utility/getZoomLevelsResolution";
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-export default function LocationMap({propertyId}) {
+export default function LocationMap({location}) {
+  console.log(location)
+  
   const [markerPoint, setMarkerPoint] = useState({
-    longitude:90.36203892315308,
-    latitude:23.82439436458189
+    longitude:location['longitude'],
+    latitude:location['latitude']
   })
 
 
-  const {isLoading, propertyLocation }= usePropertyLocation(propertyId)
+  // const {isLoading, propertyLocation }= usePropertyLocation(propertyId)
   const [circleSize, setCircleSize] = useState(167)
   
   const [viewport, setViewport] = useState({
-    longitude:0,
-    latitude:0,
+    longitude:location['longitude'],
+    latitude:location['latitude'],
     zoom:15
   })
 const propertyMapRef = useRef();
@@ -26,20 +28,20 @@ const handleViewportChange = useCallback(
   (newViewport) => setViewport(newViewport),
   []
 );
-useEffect(()=>{
-  let ignore = false 
-  if(!isLoading && !ignore){
-    setViewport({            ...viewport,
-                  longitude: propertyLocation['lng'],
-                   latitude: propertyLocation['lat'],
-                })
-    setMarkerPoint({
-        longitude: propertyLocation['lng'],
-        latitude: propertyLocation['lat'],
-    })
-  }
-  return ()=> ignore = true
-}, [isLoading])
+// useEffect(()=>{
+//   let ignore = false 
+//   if(!isLoading && !ignore){
+//     setViewport({            ...viewport,
+//                   longitude: propertyLocation['lng'],
+//                    latitude: propertyLocation['lat'],
+//                 })
+//     setMarkerPoint({
+//         longitude: propertyLocation['lng'],
+//         latitude: propertyLocation['lat'],
+//     })
+//   }
+//   return ()=> ignore = true
+// }, [isLoading])
 
 useEffect(()=>{
   
@@ -47,7 +49,7 @@ useEffect(()=>{
   // console.log(viewport)
 
 console.log(getZoomLevelsResolution(viewport['zoom']))
-setCircleSize(800/getZoomLevelsResolution(viewport['zoom']))
+setCircleSize(1200/getZoomLevelsResolution(viewport['zoom']))
 }, [ viewport['zoom'] ])
 
 // useEffect(() => {
@@ -79,9 +81,7 @@ setCircleSize(800/getZoomLevelsResolution(viewport['zoom']))
   return (
     <div className="w-100 h-100 round-8px">
       {
-        isLoading
-          ? <div>Loading...</div>
-          : <Map 
+        <Map 
             ref={propertyMapRef}
             style={{borderRadius:'8px'}}
             {...viewport}

@@ -73,14 +73,16 @@ const icons = [
 ]
 
 const Amenities = ({data}) => {
+    console.log(data)
+    // return <div>...</div>
     const amenitiesContainerId = 'all-amenities'
     const renderAmenities = 
         data.map(
             (item, index)=> (                                    
                                 <div className={`${styles.amenity_item} `}>
                                     {
-                                        // item.icon.type.includes('lucidicon') 
-                                        //     && <LucidIcon className={`${styles.amenities_icon}`} name={ item['icon']['name']} size={24} />
+                                        item.icon.type.includes('lucidicon') 
+                                            && <LucidIcon className={`${styles.amenities_icon}`} name={ item['icon']['name'] } size={24} />
                                             // : <Image src={`@/../public${item['icon']['link']}`} className={`${styles.amenities_icon_image}`} height={24} width={24}/>
                                     }
                                     {/* className={`${styles.amenities_icon}`} */}
@@ -106,6 +108,14 @@ const Amenities = ({data}) => {
                                                     // : <Image src={`@/../public${item['icon']['link']}`} className={`${styles.amenities_icon_image}`} height={24} width={24}/>
                                             }
                                             {/* className={`${styles.amenities_icon}`} */}
+                                            {
+                                        // item.icon.type.includes('lucidicon') 
+                                            // ? <LucidIcon className={`${styles.amenities_icon} top-4px  position-absolute `} name={ item['icon']['name'] } size={24} />
+                                            // : <LucidIcon className='min-w-24px min-h-24px top-4px position-absolute'  name={'check'} size={24} />
+                                            // : <Image src={`@/../public${item['icon']['link']}`} className={`${styles.amenities_icon_image}`} height={24} width={24}/>
+                                    }
+
+
                                             <LucidIcon className='min-w-24px min-h-24px'  name={'check'} size={24} />
                                             <div className={`${styles.amenities_title}`}>{item['title']}</div>
                                         </div>

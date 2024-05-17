@@ -52,7 +52,7 @@ export default function Availability() {
 
         console.log(e.target.value)
     // setIsBookingExtend(e.target.value);
-    dispatch({type:'addProperty/isBookingExtend', data: !(e.target.value === 'yes') });
+    dispatch({type:'addProperty/isBookingExtend', data: (e.target.value === 'yes') });
     };
     async function updateProperty({propertyId, data}){
         let query = process.env.NEXT_PUBLIC_API_URL + `/api/listing?id=${propertyId}`
@@ -174,7 +174,7 @@ export default function Availability() {
                         {
                             isBookingExtend 
                                 ? <CircleCheckBig size={24} className='opacity-0_70' />
-                                :   <Circle size={24} className='opacity-0_70' />
+                                : <Circle size={24} className='opacity-0_70' />
                         }
                             <input type="radio" name="is_booking_extend" value="yes" checked={isBookingExtend} 
                             onClick={handleIsBookingExtendChange}
@@ -188,7 +188,7 @@ export default function Availability() {
                         {
                             !isBookingExtend 
                                 ? <CircleCheckBig size={24} className='opacity-0_70' />
-                                :   <Circle size={24} className='opacity-0_70' />
+                                : <Circle size={24} className='opacity-0_70' />
                         }
                             <input type="radio" name="is_booking_extend" value="no" checked={!isBookingExtend} 
                             onClick={handleIsBookingExtendChange}

@@ -39,11 +39,11 @@ const images = await getImages(data)
                             {
                                 data.map((img, idx)=>{
                                     const image_id = `detail_image_${idx}`
-                                    const image = storageService.getPropertyImage(img)
+                                    // const image = storageService.getPropertyImage(img)
                                     return (
                                         <div className='position-relative min-w-100 min-h-500px
                                          radius-4 mr-btm-36px-not-last-child'>
-                                            <Image id={image_id} key={idx} src={image} fill objectFit="contain"/>
+                                            <Image id={image_id} key={idx} src={img['pathName']+img['fileName']} fill objectFit="contain"/>
                                         </div>
                                     )
                                 })

@@ -29,7 +29,7 @@ export default function HomeRules() {
     const router = useRouter()
     const { isLoading, homeRules : homeRulesData } = useHomeRules() 
 
-    const {activeSession: { id:propertyId, _homeRules:selectedHomeRules,checkInTime, checkOutTime, timezone, customHomeRules}, } = useAddPropertySession()
+    const {activeSession: { id:propertyId, _homeRules:selectedHomeRules, checkInTime, checkOutTime, timezone, customHomeRules}, } = useAddPropertySession()
     const {  timeZone:timezoneData } = useProperty()
 
 

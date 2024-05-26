@@ -25,8 +25,6 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
             let isZipCodeSet =  false
             let isMapLocationSet =  false
 
-
-
             if(data.hasOwnProperty('country')){
                 if(data['country'].hasOwnProperty('name') && data['country']['name'].length > 0){
                     isCountrySet = true 
@@ -48,13 +46,11 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                     isThanaSet = true 
                 }
             }
-
             if(data.hasOwnProperty('timezone')){
                 if( data['timezone'].length > 0){
                     isTimezoneSet = true 
                 }
             }
-
             if(data.hasOwnProperty('zipCode')){
                 if( data['zipCode'].length > 0){
                     isZipCodeSet = true 
@@ -382,6 +378,20 @@ export default function addPropertySessionReducers(initialData, {type, data}) {
                 }
         }
         case 'addProperty/setSessionLocation':{
+
+            if(!initialData['setterConditions']['isMapLocationSet'])
+                return { 
+                    ...initialData,
+                    activeSession:{
+                        ...initialData['activeSession'],
+                        location:[data['latitude'], data['longitude']]
+                        },
+                    setterConditions:{
+                        ...initialData['setterConditions'],
+                        isMapLocationSet: true,
+                        }
+                    }
+
             return { 
                             ...initialData,
                             activeSession:{

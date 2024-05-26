@@ -10,6 +10,7 @@ import Heading from '../Heading'
 import { useRouter } from 'next/navigation'
 import useAddPropertySession from '@/context/addListing/useAddPropertySession'
 import usePropertyListingSession from '@/context/addListing/usePropertyListingSessions'
+import { useEffect, useState } from 'react'
 
 
 
@@ -20,7 +21,10 @@ export default function ViewPropertyType() {
   const { activeSession:{id:propertyId, _propertyType: propertyType},}  = useAddPropertySession()
   const propertyListingData = usePropertyListingSession()
   const { isLoading, propertyTypes} = usePropertyTypes()
+
+  const [selectedProperty, setSelectedProperty] = useState({})
   
+  console.log(propertyTypes)
 
   const router = useRouter()
   // const { selectedPropertyType } = useProperty()
@@ -33,13 +37,20 @@ export default function ViewPropertyType() {
   }
 
 
+  useEffect(()=>{
+    if(propertyType.length > 0 ){
+      const property = propertyTypes.find(i=>i['id']=== propertyType)
+      if(property)
+        setSelectedProperty(property)
+    }
+  }, [propertyTypes])
+
   if(propertyType === '' || propertyType.length < 1){
     moveToPreviousPage()
   }
-    const selectedProperty = propertyTypes.find(i=>i['id']===propertyType)
     return (
 
-      propertyType === '' 
+      (propertyType === ''  ||  isLoading || Object.keys(selectedProperty).length === 0)
       ? <div>wait ...</div>
       : <div className=' w-100 absolute-center max-width-1280'>
           <Heading txt={`You're Listing`} />

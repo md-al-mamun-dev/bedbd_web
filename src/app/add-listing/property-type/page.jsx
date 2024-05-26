@@ -5,15 +5,9 @@ import usePropertyTypes from '@/hooks/usePropertyTypes'
 import { useRouter } from 'next/navigation'
 import useToken from '@/context/account/useToken'
 import usePropertyListingSession from '@/context/addListing/usePropertyListingSessions'
-
-
 import useAddPropertySessionDispatch from '@/context/addListing/useAddPropertySessionDispatch'
-
-
 import useAddPropertySession from '@/context/addListing/useAddPropertySession'
 import useProperty from '@/context/property/useProperty'
-
-
 import Heading from '../Heading'
 
 
@@ -67,7 +61,7 @@ export default function PropertyType() {
                 _propertyType: propertyType, 
                 sessionStatus: 'view-property-type' 
             }})
-        router.push('/add-listing/view-property-type')
+        router.push('/add-listing/view-property-type')       
     }
 
   return (

@@ -89,6 +89,8 @@ async function findOwnersProperty(ownersUserId) {
 
 export async function POST(request, response) {
 
+  console.log('from post   request')
+
   const token = request.headers.get('Authorization').split(' ')[1];
   const userClient = new Client()
                           .setEndpoint(process.env.APPWRITE_URL)
